@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1  
+kind: Ingress  
+metadata:  
+  name: mt4-trading-api-web-staging
+  namespace: mt4-trading-api-staging
+  annotations:
+        nginx.ingress.kubernetes.io/affinity: "cookie"
+        nginx.ingress.kubernetes.io/session-cookie-name: "INGRESSCOOKIE"
+        nginx.org/websocket-services: "mt4-trading-api-web-staging"
+
+spec:  
+  rules:
+  - host: mt4-api-aws.bdswiss-staging.com
+    http:
+      paths:
+      - backend:
+          serviceName: mt4-trading-api-web-staging
+          servicePort: 80
+        path: /
+  - host: mt4-api.bdswiss-staging.com
+    http:
+      paths:
+      - backend:
+          serviceName: mt4-trading-api-web-staging
+          servicePort: 80
+        path: /
+

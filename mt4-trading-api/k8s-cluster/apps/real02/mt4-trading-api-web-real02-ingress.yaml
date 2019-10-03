@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1  
+kind: Ingress  
+metadata:  
+  name: mt4-trading-api-web-real02
+  namespace: mt4-trading-api-real02
+  annotations:
+        nginx.ingress.kubernetes.io/affinity: "cookie"
+        nginx.ingress.kubernetes.io/session-cookie-name: "INGRESSCOOKIE"
+        nginx.org/websocket-services: "mt4-trading-api-web-real02"
+
+spec:  
+  rules:
+  - host: mt4-api.bdswis.com
+    http:
+      paths:
+      - backend:
+          serviceName: mt4-trading-api-web-real02
+          servicePort: 80
+        path: /

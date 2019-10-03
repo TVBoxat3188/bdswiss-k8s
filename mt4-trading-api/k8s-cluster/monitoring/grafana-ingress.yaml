@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1  
+kind: Ingress  
+metadata:  
+  name: grafana
+  namespace: monitoring
+  annotations:
+spec:  
+  rules:
+  - host: grafana.bdswiss.com
+    http:
+      paths:
+      - backend:
+          serviceName: mon-grafana
+          servicePort: 80
+        path: /
+

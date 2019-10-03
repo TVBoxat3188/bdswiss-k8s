@@ -1,0 +1,11 @@
+aws elasticache create-replication-group \
+    --replication-group-id mt4-trading-api-staging-1 \
+    --replication-group-description mt4-trading-api-staging \
+    --engine redis \
+    --engine-version 5.0.5 \
+    --cache-node-type cache.t2.small \
+    --num-node-groups 1 \
+    --replicas-per-node-group 1 \
+    --cache-parameter-group default.redis5.0 \
+    --auth-token JKUdkuy2304cfn06666q89hwefsdf3456n98sad232rf \
+    --cache-subnet-group mt4-trading-api-staging

@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mt4-trading-api-worker-staging
+  namespace: mt4-trading-api-staging
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mt4-trading-api-worker-staging
+    spec:
+      containers:
+      - name: mt4-trading-api-worker-staging
+        image: '559845540357.dkr.ecr.eu-west-2.amazonaws.com/mt4-trading-api:worker-staging-ae7e4854'
+        resources:
+          limits:
+            cpu: 300m
+            memory: 600Mi
+          requests:
+            cpu: 200m
+            memory: 500Mi
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: envfile
+          mountPath: "/opt/application/.env"
+          subPath: mt4-trading-api-worker-staging.env
+      volumes:
+      - name: envfile
+        configMap:
+          name: mt4-trading-api-worker-staging
