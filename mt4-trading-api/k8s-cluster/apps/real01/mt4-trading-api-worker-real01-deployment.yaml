@@ -29,6 +29,6 @@ spec:
           subPath: mt4-trading-api-worker-real01.env
       volumes:
       - name: envfile
-        secret:
-          secretName: mt4-trading-api-worker-real01
+        configMap:
+          name: mt4-trading-api-worker-real01
 
