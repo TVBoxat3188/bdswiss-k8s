@@ -1,0 +1,29 @@
+{
+  "source": [
+    "aws.ssm"
+  ],
+  "detail-type": [
+    "Parameter Store Change"
+  ],
+  "detail": {
+    "name": [
+      "/mt4-trading-api/web/demo/ENV_REVISION",
+      "/mt4-trading-api/worker/demo/ENV_REVISION",
+      "/mt4-trading-api/margincall/demo/ENV_REVISION",
+      "/mt4-trading-api/web/real01/ENV_REVISION",
+      "/mt4-trading-api/worker/real01/ENV_REVISION",
+      "/mt4-trading-api/margincall/real01/ENV_REVISION",
+      "/mt4-trading-api/web/real02/ENV_REVISION",
+      "/mt4-trading-api/worker/real02/ENV_REVISION",
+      "/mt4-trading-api/margincall/real02/ENV_REVISION",
+      "/mt4-trading-api/web/staging/ENV_REVISION",
+      "/mt4-trading-api/worker/staging/ENV_REVISION"
+    ],
+    "operation": [
+      "Create",
+      "Update",
+      "Delete",
+      "LabelParameterVersion"
+    ]
+  }
+}

@@ -5,11 +5,12 @@ metadata:
   name: mt4-trading-api-web-real02
   namespace: mt4-trading-api-real02
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
         app: mt4-trading-api-web-real02
+        env: mt4-trading-api-real02
     spec:
       containers:
       - name: mt4-trading-api-web-real02
@@ -17,16 +18,16 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 200Mi
+            memory: 1000Mi
           requests:
             cpu: 200m
-            memory: 100Mi
+            memory: 500Mi
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: envfile
           mountPath: "/opt/application/.env"
-          subPath: mt4-trading-api-web-real02.env
+          subPath: mt4-trading-api-web-real02.properties
       volumes:
       - name: envfile
         configMap:

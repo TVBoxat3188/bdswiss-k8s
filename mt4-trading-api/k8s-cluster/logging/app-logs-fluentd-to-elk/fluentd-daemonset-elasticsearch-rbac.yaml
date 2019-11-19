@@ -1,0 +1,157 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bdswiss-fluentd
+  namespace: kube-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: bdswiss-fluentd
+  namespace: kube-system
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: bdswiss-fluentd
+roleRef:
+  kind: ClusterRole
+  name: bdswiss-fluentd
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: bdswiss-fluentd
+  namespace: kube-system
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: bdswiss-fluentd
+  namespace: kube-system
+  labels:
+    k8s-app: bdswiss-fluentd-logging
+    version: v1
+    kubernetes.io/cluster-service: "true"
+spec:
+  template:
+    metadata:
+      labels:
+        k8s-app: bdswiss-fluentd-logging
+        version: v1
+        kubernetes.io/cluster-service: "true"
+    spec:
+      serviceAccount: bdswiss-fluentd
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      initContainers:
+      - name: config-bdswiss-fluentd
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh","-c"]
+        args:
+        - cp /fluentd/etc2/fluent.conf /fluentd/etc/fluent.conf;
+          cp /fluentd/etc2/kubernetes.conf /fluentd/etc/kubernetes.conf;
+          #cp /fluentd/etc2/systemd.conf /fluentd/etc/systemd.conf;
+        volumeMounts:
+        - name: config-path
+          mountPath: /fluentd/etc
+        - name: config-source
+          mountPath: /fluentd/etc2
+      containers:
+      - name: bdswiss-fluentd
+        image: fluent/fluentd-kubernetes-daemonset:v1.7.1-debian-elasticsearch7-1.0
+        env:
+          - name:  FLUENT_ELASTICSEARCH_HOST
+            value: "178.63.49.238"
+          - name:  FLUENT_ELASTICSEARCH_PORT
+            value: "8889"
+          - name: FLUENT_ELASTICSEARCH_SCHEME
+            value: "https"
+          - name: FLUENT_ELASTICSEARCH_SSL_VERIFY
+            value: "false"
+          - name: FLUENT_ELASTICSEARCH_SSL_VERSION
+            value: "TLSv1_2"
+          - name: ES_CLIENT_KEY
+            value: "/fluentd/etc/client.key/id_rsa"
+          - name: ES_CLIENT_CERT
+            value: "/fluentd/etc/client.cer/id_rsa"
+          - name: ES_CA
+            value: "/fluentd/etc/client-ca.cer/id_rsa"
+          - name: SSL_CERT_DIR
+            value: "/fluentd/etc"
+          - name: SSL_CERT_FILE
+            value: "/fluentd/etc/client-ca.cer/id_rsa"
+          # X-Pack Authentication
+          # =====================
+          - name: FLUENT_ELASTICSEARCH_USER
+            value: "elastic"
+          - name: FLUENT_ELASTICSEARCH_PASSWORD
+            value: "BDswiss@123Elas"
+          # =====================
+          - name: FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT
+            value: "true"
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+        - name: config-path
+          mountPath: /fluentd/etc
+        - name: client-key-volume
+          mountPath: "/fluentd/etc/client.key/id_rsa"
+          subPath: id_rsa
+          readOnly: true
+        - name: client-cer-volume
+          mountPath: "/fluentd/etc/client.cer/id_rsa"
+          subPath: id_rsa
+          readOnly: true
+        - name: client-ca-cer-volume
+          mountPath: "/fluentd/etc/client-ca.cer/id_rsa"
+          subPath: id_rsa
+          readOnly: true
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      - name: config-source
+        configMap:
+          name: bdswiss-fluentd-config
+      - name: config-path
+        emptyDir: {}
+      - name: client-key-volume
+        secret:
+          secretName: bdswiss-fluentd-secret-client-key
+          defaultMode: 256
+      - name: client-cer-volume
+        secret:
+          secretName: bdswiss-fluentd-secret-client-cer
+          defaultMode: 256
+      - name: client-ca-cer-volume
+        secret:
+          secretName: bdswiss-fluentd-secret-client-ca-cer
+          defaultMode: 256

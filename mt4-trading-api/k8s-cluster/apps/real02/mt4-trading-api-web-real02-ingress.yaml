@@ -10,7 +10,7 @@ metadata:
 
 spec:  
   rules:
-  - host: mt4-api.bdswis.com
+  - host: mt4-api-real02.bdswiss.com
     http:
       paths:
       - backend:

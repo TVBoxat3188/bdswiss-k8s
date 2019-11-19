@@ -10,6 +10,7 @@ spec:
     metadata:
       labels:
         app: mt4-trading-api-worker-staging
+        env: mt4-trading-api-staging
     spec:
       containers:
       - name: mt4-trading-api-worker-staging
@@ -17,7 +18,7 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 600Mi
+            memory: 2000Mi
           requests:
             cpu: 200m
             memory: 500Mi
@@ -26,7 +27,7 @@ spec:
         volumeMounts:
         - name: envfile
           mountPath: "/opt/application/.env"
-          subPath: mt4-trading-api-worker-staging.env
+          subPath: mt4-trading-api-worker-staging.properties
       volumes:
       - name: envfile
         configMap:

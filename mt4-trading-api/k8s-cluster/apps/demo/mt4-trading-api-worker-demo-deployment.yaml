@@ -10,23 +10,24 @@ spec:
     metadata:
       labels:
         app: mt4-trading-api-worker-demo
+        env: mt4-trading-api-demo
     spec:
       containers:
       - name: mt4-trading-api-worker-demo
         image: '559845540357.dkr.ecr.eu-west-2.amazonaws.com/mt4-api/test:mt4-trading-api-server-staging15'
         resources:
           limits:
-            cpu: 400m
-            memory: 400Mi
+            cpu: 1000m
+            memory: 600Mi
           requests:
-            cpu: 300m
-            memory: 300Mi
+            cpu: 600m
+            memory: 500Mi
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: envfile
           mountPath: "/opt/application/.env"
-          subPath: mt4-trading-api-worker-demo.env
+          subPath: mt4-trading-api-worker-demo.properties
       volumes:
       - name: envfile
         configMap:

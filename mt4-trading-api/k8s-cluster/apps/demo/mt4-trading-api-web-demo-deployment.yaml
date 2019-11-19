@@ -10,6 +10,7 @@ spec:
     metadata:
       labels:
         app: mt4-trading-api-web-demo
+        env: mt4-trading-api-demo
     spec:
       containers:
       - name: mt4-trading-api-web-demo
@@ -17,16 +18,16 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 200Mi
+            memory: 800Mi
           requests:
             cpu: 200m
-            memory: 100Mi
+            memory: 500Mi
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: envfile
           mountPath: "/opt/application/.env"
-          subPath: mt4-trading-api-web-demo.env
+          subPath: mt4-trading-api-web-demo.properties
       volumes:
       - name: envfile
         configMap:

@@ -1,0 +1,564 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bdswiss-fluentd-config
+  namespace: kube-system
+  labels:
+    k8s-app: bdswiss-fluentd-logging
+    version: v1
+    kubernetes.io/cluster-service: "true"
+data:
+  fluent.conf: |
+    #@include systemd.conf
+    @include kubernetes.conf
+    <match mt4-trading-api-web-staging>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-web-staging"
+       index_name "mt4-trading-api-web-staging"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-worker-staging>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-worker-staging"
+       index_name "mt4-trading-api-worker-staging"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-web-real01>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-web-real01"
+       index_name "mt4-trading-api-web-real01"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-worker-real01>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-worker-real01"
+       index_name "mt4-trading-api-worker-real01"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-web-real02>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-web-real02"
+       index_name "mt4-trading-api-web-real02"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-worker-real02>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-worker-real02"
+       index_name "mt4-trading-api-worker-real02"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-web-demo>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-web-demo"
+       index_name "mt4-trading-api-web-demo"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-worker-demo>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-worker-demo"
+       index_name "mt4-trading-api-worker-demo"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+
+    <match mt4-trading-api-margincall-real01>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-margincall-real01"
+       index_name "mt4-trading-api-margincall-real01"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-margincall-real02>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-margincall-real02"
+       index_name "mt4-trading-api-margincall-real02"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+    <match mt4-trading-api-margincall-demo>
+       @type elasticsearch
+       include_tag_key true
+       logstash_format "#{ENV['FLUENT_ELASTICSEARCH_LOGSTASH_FORMAT'] || 'true'}"
+       utc_index false
+       host "#{ENV['FLUENT_ELASTICSEARCH_HOST']}"
+       port "#{ENV['FLUENT_ELASTICSEARCH_PORT']}"
+       scheme "#{ENV['FLUENT_ELASTICSEARCH_SCHEME'] || 'https'}"
+       ssl_verify "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERIFY'] || 'false'}"
+       ssl_version "#{ENV['FLUENT_ELASTICSEARCH_SSL_VERSION'] || 'TLSv1_2'}"
+       client_key "#{ENV['ES_CLIENT_KEY']}"
+       client_cert "#{ENV['ES_CLIENT_CERT']}"
+       ca_file "#{ENV['ES_CA']}"
+       user "#{ENV['FLUENT_ELASTICSEARCH_USER']}"
+       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD']}"
+       reload_connections "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_CONNECTIONS'] || 'true'}"
+       reconnect_on_error "#{ENV['FLUENT_ELASTICSEARCH_RECONNECT_ON_ERROR'] || 'false'}"
+       reload_on_failure "#{ENV['FLUENT_ELASTICSEARCH_RELOAD_ON_FAILURE'] || 'false'}"
+       logstash_prefix "mt4-trading-api-margincall-demo"
+       index_name "mt4-trading-api-margincall-demo"
+       type_name "fluentd"
+       <buffer>
+         flush_thread_count "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_THREAD_COUNT'] || '8'}"
+         flush_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_FLUSH_INTERVAL'] || '10s'}"
+         chunk_limit_size "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_CHUNK_LIMIT_SIZE'] || '2M'}"
+         queue_limit_length "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_QUEUE_LIMIT_LENGTH'] || '32'}"
+         retry_max_interval "#{ENV['FLUENT_ELASTICSEARCH_BUFFER_RETRY_MAX_INTERVAL'] || '30'}"
+         retry_forever true
+      </buffer>
+     </match>
+
+  kubernetes.conf: |
+    <match fluent.**>
+      @type null
+      @id in_tail_container_logs
+    </match>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-web-staging*.log"
+      pos_file "/var/log/mt4-trading-api-web-staging-log.pos"
+      tag "mt4-trading-api-web-staging"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true        
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-worker-staging*.log"
+      pos_file "/var/log/mt4-trading-api-worker-staging-log.pos"
+      tag "mt4-trading-api-worker-staging"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true        
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-web-real01*.log"
+      pos_file "/var/log/mt4-trading-api-web-real01-log.pos"
+      tag "mt4-trading-api-web-real01"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true        
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-worker-real01*.log"
+      pos_file "/var/log/mt4-trading-api-worker-real01-log.pos"
+      tag "mt4-trading-api-worker-real01"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true        
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-web-real02*.log"
+      pos_file "/var/log/mt4-trading-api-web-real02-log.pos"
+      tag "mt4-trading-api-web-real02"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-worker-real02*.log"
+      pos_file "/var/log/mt4-trading-api-worker-real02-log.pos"
+      tag "mt4-trading-api-worker-real02"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-web-demo*.log"
+      pos_file "/var/log/mt4-trading-api-web-demo-log.pos"
+      tag "mt4-trading-api-web-demo"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-worker-demo*.log"
+      pos_file "/var/log/mt4-trading-api-worker-demo-log.pos"
+      tag "mt4-trading-api-worker-demo"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-margincall-real01*.log"
+      pos_file "/var/log/mt4-trading-api-margincall-real01-log.pos"
+      tag "mt4-trading-api-margincall-real01"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-margincall-real02*.log"
+      pos_file "/var/log/mt4-trading-api-margincall-real02-log.pos"
+      tag "mt4-trading-api-margincall-real02"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true
+      </parse>
+    </source>
+    <source>
+      @type tail
+      path "/var/log/containers/mt4-trading-api-margincall-demo*.log"
+      pos_file "/var/log/mt4-trading-api-margincall-demo-log.pos"
+      tag "mt4-trading-api-margincall-demo"
+      read_from_head true
+      <parse>
+        @type "json"
+        time_key time
+        time_type string
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        keep_time_key true
+      </parse>
+    </source>
+    #<source>
+    #  @type tail
+    #  @id in_tail_container_logs
+    #  path "/var/log/containers/*.log"
+    #  pos_file "/var/log/fluentd-{log name}.log.pos"
+    #  tag "kubernetes.*"
+    #  read_from_head true
+    #  <parse>
+    #    @type "json"
+    #    time_format "%Y-%m-%dT%H:%M:%S.%NZ"
+    #    time_type string
+    #  </parse>
+    #</source>
+  #systemd.conf: |
+  #  <source>
+  #    @type systemd
+  #    @id in_systemd_kubelet
+  #    matches [{ "_SYSTEMD_UNIT": "kubelet.service" }]
+  #    <storage>
+  #      @type local
+  #      persistent true
+  #      path /var/log/fluentd-journald-kubelet-cursor.json
+  #    </storage>
+  #    <entry>
+  #      fields_strip_underscores true
+  #    </entry>
+  #    read_from_head true
+  #    tag kubelet
+  #  </source>
+  #  <source>
+  #    @type systemd
+  #    @id in_systemd_docker
+  #    matches [{ "_SYSTEMD_UNIT": "docker.service" }]
+  #    <storage>
+  #      @type local
+  #      persistent true
+  #      path /var/log/fluentd-journald-docker-cursor.json
+  #    </storage>
+  #    <entry>
+  #      fields_strip_underscores true
+  #    </entry>
+  #    read_from_head true
+  #    tag docker.systemd
+  #  </source>
+  #  <source>
+  #    @type systemd
+  #    @id in_systemd_bootkube
+  #    matches [{ "_SYSTEMD_UNIT": "bootkube.service" }]
+  #    <storage>
+  #      @type local
+  #      persistent true
+  #      path /var/log/fluentd-journald-bootkube-cursor.json
+  #    </storage>
+  #    <entry>
+  #      fields_strip_underscores true
+  #    </entry>
+  #    read_from_head true
+  #    tag bootkube
+  #  </source>

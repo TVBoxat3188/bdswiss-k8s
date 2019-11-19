@@ -2,19 +2,19 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: mt4-trading-api-web-staging
+  name: mt4-trading-api-margincall-staging
   namespace: mt4-trading-api-staging
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: mt4-trading-api-web-staging
+        app: mt4-trading-api-margincall-staging
         env: mt4-trading-api-staging
     spec:
       containers:
-      - name: mt4-trading-api-web-staging
-        image: '559845540357.dkr.ecr.eu-west-2.amazonaws.com/mt4-api/test:mt4-trading-api-server-staging15'
+      - name: mt4-trading-api-margincall-staging
+        image: '559845540357.dkr.ecr.eu-west-2.amazonaws.com/mt4-trading-api:web-staging-4'
         resources:
           limits:
             cpu: 300m
@@ -27,9 +27,9 @@ spec:
         volumeMounts:
         - name: envfile
           mountPath: "/opt/application/.env"
-          subPath: mt4-trading-api-web-staging.properties
+          subPath: mt4-trading-api-margincall-staging.properties
       volumes:
       - name: envfile
         configMap:
-          name: mt4-trading-api-web-staging
+          name: mt4-trading-api-margincall-staging
 

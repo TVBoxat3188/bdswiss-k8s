@@ -1,1 +1,2 @@
-# bdswiss-k8s
+# bdswiss-devops
+A GitOps methodology for BDSwiss server infrastructure

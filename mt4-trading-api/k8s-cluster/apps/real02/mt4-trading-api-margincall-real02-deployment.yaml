@@ -2,34 +2,34 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: mt4-trading-api-worker-real02
+  name: mt4-trading-api-margincall-real02
   namespace: mt4-trading-api-real02
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: mt4-trading-api-worker-real02
+        app: mt4-trading-api-margincall-real02
         env: mt4-trading-api-real02
     spec:
       containers:
-      - name: mt4-trading-api-worker-real02
-        image: '559845540357.dkr.ecr.eu-west-2.amazonaws.com/mt4-api/test:mt4-trading-api-server-staging15'
+      - name: mt4-trading-api-margincall-real02
+        image: '559845540357.dkr.ecr.eu-west-2.amazonaws.com/mt4-trading-api:web-real01-ae7e4854-10'
         resources:
           limits:
-            cpu: 400m
-            memory: 1000Mi
+            cpu: 500m
+            memory: 2000Mi
           requests:
             cpu: 300m
-            memory: 500Mi
+            memory: 1000Mi
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: envfile
           mountPath: "/opt/application/.env"
-          subPath: mt4-trading-api-worker-real02.properties
+          subPath: mt4-trading-api-margincall-real02.properties
       volumes:
       - name: envfile
         configMap:
-          name: mt4-trading-api-worker-real02
+          name: mt4-trading-api-margincall-real02
 

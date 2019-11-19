@@ -6,7 +6,7 @@ metadata:
   annotations:
 spec:  
   rules:
-  - host: grafana.bdswiss.com
+  - host: grafana-k8s-1.bdswiss.com
     http:
       paths:
       - backend:

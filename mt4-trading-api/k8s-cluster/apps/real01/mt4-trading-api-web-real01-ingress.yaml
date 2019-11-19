@@ -10,17 +10,18 @@ metadata:
 
 spec:  
   rules:
-  - host: mt4-api-aws.bdswiss.com
+  - host: mt4-api.bdswiss.com
     http:
       paths:
       - backend:
           serviceName: mt4-trading-api-web-real01
           servicePort: 80
         path: /
-  - host: mt4-api.bdswis.com
+  - host: mt4-api-real01.bdswiss.com
     http:
       paths:
       - backend:
           serviceName: mt4-trading-api-web-real01
           servicePort: 80
         path: /
+

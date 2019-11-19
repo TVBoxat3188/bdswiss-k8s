@@ -1,0 +1,17 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mt4-trading-api-web-real02
+  namespace: mt4-trading-api-real02
+spec:
+  maxReplicas: 4
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: mt4-trading-api-web-real02
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: 150

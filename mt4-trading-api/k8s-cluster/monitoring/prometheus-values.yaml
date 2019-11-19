@@ -1,0 +1,44 @@
+kubelet:
+  serviceMonitor:
+    https: true
+
+prometheus:
+  service:
+    type: NodePort
+    nodePort: 30000
+  prometheusSpec:
+    externalLabels:
+      prometheus_replica: prometheus-k8s-1
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+alertmanager:
+  service:
+    type: NodePort
+    nodePort: 30001
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+
+grafana:
+  adminPassword: "admin"
+  persistence:
+    enabled: true
+    accessModes: ["ReadWriteOnce"]
+    size: 5Gi
+  service:
+    type: NodePort
+    nodePort: 30002
+  plugins:
+  - grafana-piechart-panel
+
